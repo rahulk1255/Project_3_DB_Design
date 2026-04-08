@@ -1,115 +1,58 @@
+```
 📘 Clinic Appointment & Diagnostics Platform – ER Diagram
 📌 Overview
 
-This project presents a scalable ER diagram design for a clinic management system.
-It models the complete workflow from patient appointment booking to consultation, diagnostics, reporting, and payments.
+This ER diagram represents a clinic management system that handles patients, doctors, appointments, consultations, diagnostic tests, reports, and payments.
+The design follows a real-world workflow and is structured to be scalable and normalized.
 
-The design focuses on real-world usability, normalization, and scalability, making it suitable for modern clinic platforms.
+🔄 Workflow
 
-🎯 Objectives
+The system follows this flow:
 
-The system is designed to answer:
-
-Who are the doctors and their specialties?
-Which patient booked which appointment?
-What is the appointment status?
-Did the appointment result in a consultation?
-What tests were prescribed?
-What reports were generated?
-Can patients have multiple visits?
-How are payments handled?
-🔄 System Workflow
 Patient → Appointment → Consultation → Tests → Reports → Invoice → Payment
 A patient books an appointment with a doctor
-Appointment may result in a consultation
-During consultation, doctor may prescribe medicines and tests
-Tests are processed and reports are generated
-Billing is handled via invoices and payments
+The appointment may result in a consultation (visit)
+During consultation, medicines and diagnostic tests may be prescribed
+Tests generate reports
+Billing is handled through invoices and payments
 🧱 Entities Included
-👤 Patient Domain
 Patients
 Patient Addresses
 Patient Medical History
-👨‍⚕️ Doctor Domain
 Doctors
 Specialties
-Doctor Specialties (M:N)
+Doctor Specialties
 Doctor Availability
-📅 Appointment Domain
 Appointments
-🩺 Consultation Domain
 Consultations
+Medicines
 Consultation Medicines
-🧪 Diagnostics Domain
 Test Types
 Labs
 Test Orders
 Test Order Items
 Reports
-💳 Billing Domain
 Invoices
 Payments
 🔗 Key Relationships
-One patient → many appointments
-One appointment → one consultation (optional)
-One consultation → many medicines & tests
-One test order → multiple test items
-One test item → one report
-One invoice → multiple payments
-Doctors ↔ Specialties (many-to-many)
+One patient can have many appointments
+One appointment can result in one consultation (optional)
+One consultation can have multiple medicines and test orders
+One test order can contain multiple test items
+Each test item generates one report
+One invoice can have multiple payments
+Doctors can have multiple specialties (many-to-many relationship)
 🧠 Important Design Decisions
-1. Appointment vs Consultation
-Appointment represents booking
-Consultation represents actual visit
-Not all appointments lead to consultations
-2. Previous Medication Handling
-Previous medications are not stored separately
-They are derived from:
-consultation_medicines
-past consultations
-Additional support via patient_medical_history
-3. Diagnostics Modeling
-Tests are structured as:
-test_orders → test_order_items → reports
-This allows:
-Multiple tests per consultation
-Scalable lab integration
-4. Billing System
-Introduced invoice abstraction
-Supports:
-Partial payments
-Multiple payment methods
-5. Normalization
-Followed 3NF (Third Normal Form)
-Avoided redundancy
-Used junction tables for M:N relationships
-⚙️ Constraints & Data Integrity
-Primary Keys (PK) for all entities
-Foreign Keys (FK) for relationships
-UNIQUE constraints (email, phone, 1:1 mappings)
-CHECK constraints for enums (status, gender, etc.)
-NOT NULL for critical attributes
-Default values for timestamps and flags
-🚀 Scalability Features
-
-The system can be extended to support:
-
-Multi-clinic / multi-branch systems
-Online consultations (video)
-Insurance & claims
-E-prescriptions
-Lab integrations
-Analytics & reporting
-🏆 Highlights
-Clear separation of business domains
-Real-world clinic workflow modeling
-Strong relational integrity
-Scalable diagnostics and billing system
-Clean and readable ER structure
-📎 Submission Notes
-ER diagram is created using Eraser.io
-All entities include:
-Attributes
-PK/FK
-Constraints
-Relationships are clearly defined and structured
+Appointment and consultation are separate entities to reflect real clinic workflow
+Previous medications are derived from past consultation records instead of storing separately
+Diagnostic system is divided into test orders and test items for scalability
+Billing is handled using invoices to support partial and multiple payments
+Patient medical history is stored separately for chronic conditions
+⚙️ Constraints & Design Quality
+Primary keys (PK) defined for all entities
+Foreign keys (FK) used to maintain relationships
+Unique constraints on email and phone
+Check constraints for status fields and enums
+Not null constraints for important attributes
+Follows normalization (3NF) to avoid redundancy
+```
